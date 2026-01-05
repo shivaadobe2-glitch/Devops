@@ -9,19 +9,19 @@ terraform {
 
 provider "aws" {region = var.region}
 
-data "aws_ami" "latest_ami"{
-    most_recent = true
-    owners = ["amazon"]
-    filter {
-      name = "name"
-      values = [ "Amazon Linux 2023 AMI 2023.9.20251208.0 x86_64 HVM kernel-6.1*" ]
-      #values = ["Windows_Server-2025-English-Full-Base-2025.11.12*"]
-    }
-    filter {
-      name = "virtualization-type"
-      values = ["hvm"]
-    } 
-}
+# data "aws_ami" "latest_ami"{
+#     most_recent = true
+#     owners = ["amazon"]
+#     filter {
+#       name = "name"
+#       values = [ "Amazon Linux 2023 AMI 2023.9.20251208.0 x86_64 HVM kernel-6.1*" ]
+#       #values = ["Windows_Server-2025-English-Full-Base-2025.11.12*"]
+#     }
+#     filter {
+#       name = "virtualization-type"
+#       values = ["hvm"]
+#     } 
+# }
 
 data "aws_vpc" "selected"{default = true}
 
@@ -33,8 +33,9 @@ data "aws_vpc" "selected"{default = true}
 # }
 
 resource "aws_instance" "My-first-machine" {
-    ami = data.aws_ami.latest_ami.id
+    ami = "ami-0018df03456b303db"
     instance_type = "t3.micro"
+    key_name = "my-key"
     user_data = <<EOF
       #!/bin/bash
       sudo yum update -y

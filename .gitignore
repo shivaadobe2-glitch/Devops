@@ -2,3 +2,5 @@
 terraform.tfstate*
 .DS_Store*
 react*
+my-private-key.pem
+my-public-key.pem

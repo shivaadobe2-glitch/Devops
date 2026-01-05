@@ -21,18 +21,18 @@ resource "tls_private_key" "rsa_key" {
 resource "local_sensitive_file" "private_key" {
   content         = tls_private_key.rsa_key.private_key_pem
   file_permission = "0600"
-  filename        = "./react-rsa-key.pem"
+  filename        = "./my-private-key.pem"
 }
 
 # Save public key locally (optional)
 resource "local_file" "public_key" {
   content  = tls_private_key.rsa_key.public_key_openssh
-  filename = "./react-rsa-key.pub"
+  filename = "./my-public-key.pub"
 }
 
 # Upload public key to AWS
-resource "aws_key_pair" "react_key" {
-  key_name   = "react-nginx-rsa-key"
+resource "aws_key_pair" "my_key" {
+  key_name   = "my-key"
   public_key = tls_private_key.rsa_key.public_key_openssh
   
   lifecycle {
@@ -40,7 +40,7 @@ resource "aws_key_pair" "react_key" {
   }
   
   tags = {
-    Name = "React Nginx RSA Key"
+    Name = "My Key"
   }
 }
 
@@ -50,5 +50,5 @@ output "private_key_path" {
 }
 
 output "aws_key_name" {
-  value = aws_key_pair.react_key.key_name
+  value = aws_key_pair.my_key.key_name
 }
